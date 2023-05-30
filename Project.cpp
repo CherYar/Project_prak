@@ -200,7 +200,8 @@ int decrypt(const string& filename, const unsigned char* key, const unsigned cha
     }
 
     // Создание выходного файла
-    ofstream output(filename + ".dec", ios::binary);
+    string output_filename = filename.substr(0, filename.size() - 4);
+    ofstream output(output_filename, ios::binary);
     if (!output.is_open()) {
         cerr << "Ошибка при создании выходного файла" << endl;
         input.close();
@@ -332,6 +333,8 @@ int menu() {//Меню для удобной работы с программо�
         switch (choice)
         {
         case 0: {cout << "\nРабота программы завершена." << endl; break; return 0; }
+        case 3: {cout << "\nДанная программа написана на языке C++ стандарта С++20 в Microsoft Visual Studio 2022.\nОна предназначена для шифрования/расшифровывания файлов используя стандарт AES-256 из библиотеки OpenSSL v3.1.0." << endl; system("pause"); break; }
+        default: {cout << "\nНеизвестная операция\n"; CinDel system("pause"); break; }
         case 1: {CinDel string filename = readStr("\nВведите имя файла для шифрования (или 0 для отмены) :"); if (filename == "0") { cout << "\nОтмена операции, возвращение в главное меню." << endl; system("pause"); break; }
               else {
             encrypt(filename, key, iv);
@@ -342,7 +345,7 @@ int menu() {//Меню для удобной работы с программо�
               else {
             int key_choice = -1;
             cout << "Выбор ключа. Нажмите ENTER." << endl;
-            for (;key_choice != 1 && key_choice != 2 && key_choice != 0;) {
+            while (key_choice != 1 && key_choice != 2 && key_choice != 0) {
                 CinDel
                 cout << "--------------------------------------\n";
                 cout << "Выберите способ загрузки ключа:\n";
@@ -354,7 +357,7 @@ int menu() {//Меню для удобной работы с программо�
                 cout << "--------------------------------------\n";
                 key_choice = readIntV("> ", [](int c) {return c >= 0 && c <= 2; });
                 switch (key_choice) {
-                case 0: {cout << "\nОтмена поиска ключа\n"; filename = "0"; system("pause"); CinDel break; }//Это не работает, если не удастся исправить - в топку
+                case 0: {cout << "\nОтмена поиска ключа\n"; filename = "0"; system("pause"); CinDel break; }
                 case 1: {
                     loadkey(filename + ".key", key, sizeof(key), iv, sizeof(iv));
                     cout << endl;
@@ -378,8 +381,6 @@ int menu() {//Меню для удобной работы с программо�
             }
         }
         }
-        case 3: {cout << "\nДанная программа написана на языке C++ стандарта С++20 в Microsoft Visual Studio 2022.\nОна предназначена для шифрования/расшифровывания файлов используя стандарт AES-256 из библиотеки OpenSSL v3.1.0." << endl; system("pause"); break; }
-        default: {cout << "\nНеизвестная операция\n"; CinDel system("pause"); break; }
         }
     }
     return 0;
