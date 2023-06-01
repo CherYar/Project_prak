@@ -4,12 +4,12 @@
 #include <string>
 #include <limits>
 #include <functional>
-#include <openssl/rand.h>//Для создания случайного ключа
-#include <openssl/evp.h>//Для использования стандарта шифрования AES
+#include <openssl/rand.h>// Для создания случайного ключа
+#include <openssl/evp.h>// Для использования стандарта шифрования AES
 using namespace std;
-#define CinDel cin.ignore((numeric_limits<streamsize>::max)(), '\n');//Очистка буфера ввода
+#define CinDel cin.ignore((numeric_limits<streamsize>::max)(), '\n');// Очистка буфера ввода
 
-bool ValidIntModernised(const string& num) {//Проверки на возможность корректного перевода строки в число
+bool ValidIntModernised(const string& num) {// Проверки на возможность корректного перевода строки в число
     if (num.empty() || num.size() > 9) {
         return false;
     }
@@ -50,7 +50,7 @@ bool ValidFloatModernised(const string& num) {
     }
     return true;
 }
-int readIntV(const string& prompt, const function<bool(int)>& validator) {//Функции для чтения с клавиатуры в переменную с проверкой на корректность
+int readIntV(const string& prompt, const function<bool(int)>& validator) {// Функции для чтения с клавиатуры в переменную с проверкой на корректность
     string input;
     cout << prompt;
     while (cin >> input) {
@@ -113,13 +113,13 @@ string readStrV(const string& prompt, const function<bool(const string&)>& valid
     }
 }
 
-bool mrandkey(unsigned char* key, int keylen) {//Создание криптографически стойкого случайного ключа, используя генератор случайных чисел библиотеки OpenSSL. Обычные средства генерации случайных чисел в C++ могут быть предсказуемыми. Хотя для такого простого проекта это не так уж и важно
+bool mrandkey(unsigned char* key, int keylen) {// Создание криптографически стойкого случайного ключа, используя генератор случайных чисел библиотеки OpenSSL. Обычные средства генерации случайных чисел в C++ могут быть предсказуемыми. Хотя для такого простого проекта это не так уж и важно
     if (!RAND_bytes(key, keylen)) {
         return false;
     }
     return true;
 }
-int encrypt(const string& filename, const unsigned char* key, const unsigned char* iv) {//Шифрование файла
+int encrypt(const string& filename, const unsigned char* key, const unsigned char* iv) {// Шифрование файла
     // Открытие входного файла
     ifstream input(filename, ios::binary);
     if (!input.is_open()) {
@@ -194,7 +194,7 @@ int encrypt(const string& filename, const unsigned char* key, const unsigned cha
     return 0;
 }
 
-int decrypt(const string& filename, const unsigned char* key, const unsigned char* iv) {//Дешифрование файла
+int decrypt(const string& filename, const unsigned char* key, const unsigned char* iv) {// Расшифрование файла
     // Открытие входного файла
     ifstream input(filename, ios::binary);
     if (!input.is_open()) {
@@ -271,7 +271,7 @@ int decrypt(const string& filename, const unsigned char* key, const unsigned cha
 }
 
 
-int savekey(const string& filename, const unsigned char* key, int keylen, const unsigned char* iv, int ivlen) {//Сохранение ключа и вектора иициализации
+int savekey(const string& filename, const unsigned char* key, int keylen, const unsigned char* iv, int ivlen) {// Сохранение ключа и вектора иициализации
     // Открытие файла для записи
     ofstream output(filename, ios::binary);
     if (!output.is_open()) {
@@ -290,7 +290,7 @@ int savekey(const string& filename, const unsigned char* key, int keylen, const 
     return 0;
 }
 
-int loadkey(const string& filename, unsigned char* key, int keylen, unsigned char* iv, int ivlen) {//Загрузка ключа и вектора инициализации
+int loadkey(const string& filename, unsigned char* key, int keylen, unsigned char* iv, int ivlen) {// Загрузка ключа и вектора инициализации
     // Открытие файла для чтения
     ifstream input(filename, ios::binary);
     if (!input.is_open()) {
@@ -309,7 +309,7 @@ int loadkey(const string& filename, unsigned char* key, int keylen, unsigned cha
     return 0;
 }
 
-int menu() {//Меню для удобной работы с программой
+int menu() {// Меню для удобной работы с программой
     unsigned char key[32];
     if (!mrandkey(key, sizeof(key))) {
         cerr << "Ошибка при генерации случайного ключа" << endl;
@@ -378,7 +378,7 @@ int menu() {//Меню для удобной работы с программо�
             }
         }
 
-        case 2: {CinDel string filename = readStr("\nВведите имя файла для дешифрования (или 0 для отмены) :"); if (filename == "0") { cout << "\nОтмена операции, возвращение в главное меню." << endl; system("pause"); break; }
+        case 2: {CinDel string filename = readStr("\nВведите имя файла для расшифрования (или 0 для отмены) :"); if (filename == "0") { cout << "\nОтмена операции, возвращение в главное меню." << endl; system("pause"); break; }
               else {
             int key_choice = -1;
             cout << "Выбор ключа. Нажмите ENTER." << endl;
@@ -440,7 +440,7 @@ int menu() {//Меню для удобной работы с программо�
 
 
 int main() {
-    SetConsoleCP(1251); SetConsoleOutputCP(1251);//Установка корректной кодировки
+    SetConsoleCP(1251); SetConsoleOutputCP(1251);// Установка корректной кодировки
     menu();
 }
 
